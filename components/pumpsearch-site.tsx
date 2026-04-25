@@ -11,6 +11,7 @@ import {
   Clock3,
   Database,
   Eye,
+  ExternalLink,
   Filter,
   Flame,
   Gauge,
@@ -870,6 +871,15 @@ export default function PumpSearchSite() {
               >
                 View Demo
                 <ScanLine className="h-4 w-4" />
+              </a>
+              <a
+                href="https://x.com/PumpFunSearch"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border border-[rgba(122,169,255,0.55)] bg-[rgba(122,169,255,0.12)] px-5 py-3 text-sm font-medium text-[var(--accent-blue)] transition hover:translate-y-[-1px] hover:bg-[rgba(122,169,255,0.18)]"
+              >
+                X / @PumpFunSearch
+                <ExternalLink className="h-4 w-4" />
               </a>
             </div>
 
