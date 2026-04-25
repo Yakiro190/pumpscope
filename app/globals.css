@@ -1,26 +1,206 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-base: #050912;
+  --bg-surface: #0b1322;
+  --bg-surface-soft: #0f182b;
+  --bg-panel: #111d31;
+  --line: #21314b;
+  --line-soft: rgba(76, 98, 131, 0.24);
+  --text-primary: #dce7f8;
+  --text-secondary: #abc0de;
+  --text-muted: #7e95b4;
+  --accent-green: #74f6b0;
+  --accent-teal: #57d6cf;
+  --accent-blue: #7aa9ff;
+  --accent-red: #ff6a82;
+  --shadow-glow: 0 0 30px rgba(116, 246, 176, 0.1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plex);
+  --font-mono: var(--font-jet);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--line-soft);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent-teal) 42%, transparent);
+  color: var(--text-primary);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  font-family: var(--font-plex), system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(87, 214, 207, 0.13), transparent 32%),
+    radial-gradient(circle at 88% 0%, rgba(122, 169, 255, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(116, 246, 176, 0.08), transparent 44%),
+    var(--bg-base);
+  color: var(--text-primary);
+}
+
+.main-grid {
+  background-image:
+    linear-gradient(to right, rgba(88, 112, 151, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(88, 112, 151, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: center;
+}
+
+.terminal-shell {
+  background: linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--bg-panel) 92%, var(--accent-blue) 8%),
+      color-mix(in oklab, var(--bg-surface) 96%, black)
+    );
+  border: 1px solid color-mix(in oklab, var(--line) 78%, var(--accent-blue) 22%);
+  box-shadow:
+    inset 0 1px 0 rgba(186, 210, 242, 0.07),
+    0 28px 90px rgba(0, 0, 0, 0.45),
+    var(--shadow-glow);
+}
+
+.terminal-panel {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--bg-surface-soft) 97%, var(--accent-blue) 3%),
+    color-mix(in oklab, var(--bg-surface) 99%, black)
+  );
+  border: 1px solid color-mix(in oklab, var(--line) 82%, transparent);
+}
+
+.scan-overlay {
+  overflow: hidden;
+}
+
+.scan-overlay::after {
+  content: "";
+  position: absolute;
+  inset: -60% 0 auto 0;
+  height: 55%;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(116, 246, 176, 0.12),
+    rgba(87, 214, 207, 0.06),
+    transparent
+  );
+  animation: scanSweep 6.4s linear infinite;
+  pointer-events: none;
+}
+
+.pulse-dot {
+  animation: softPulse 2.4s ease-in-out infinite;
+}
+
+.blink-cursor {
+  animation: cursorBlink 1.15s steps(2, start) infinite;
+}
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-track {
+  display: inline-flex;
+  min-width: max-content;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  animation: tickerScroll 26s linear infinite;
+}
+
+.map-line {
+  stroke-dasharray: 5 7;
+  animation: dashFlow 5.4s linear infinite;
+}
+
+.data-glint {
+  position: relative;
+  overflow: hidden;
+}
+
+.data-glint::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 42%,
+    transparent 64%
+  );
+  transform: translateX(-120%);
+  animation: glint 4.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes tickerScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scanSweep {
+  to {
+    transform: translateY(260%);
+  }
+}
+
+@keyframes softPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes cursorBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+@keyframes glint {
+  0%,
+  64% {
+    transform: translateX(-120%);
+  }
+  80% {
+    transform: translateX(130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
